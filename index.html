@@ -46,12 +46,26 @@
             </div>
             <h1 class="text-xl font-bold tracking-tight bg-gradient-to-r from-white via-slate-200 to-slate-400 bg-clip-text text-transparent">Pomodoro</h1>
         </div>
-        <button id="open-settings-btn" aria-label="Settings" class="p-2.5 rounded-xl bg-slate-800/60 hover:bg-slate-700/80 border border-slate-700/50 text-slate-300 hover:text-white transition-all duration-200 active:scale-95">
-            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-            </svg>
-        </button>
+
+        <div class="flex items-center space-x-2">
+            <!-- Fullscreen Toggle Button -->
+            <button id="fullscreen-btn" aria-label="Toggle Fullscreen" title="Toggle Fullscreen (F)" class="p-2.5 rounded-xl bg-slate-800/60 hover:bg-slate-700/80 border border-slate-700/50 text-slate-300 hover:text-white transition-all duration-200 active:scale-95">
+                <svg id="enter-fs-icon" class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 8V4m0 0h4M4 4l5 5m11-1V4m0 0h-4m4 0l-5 5M4 16v4m0 0h4m-4 0l5-5m11 5l-5-5m5 5v-4m0 4h-4"/>
+                </svg>
+                <svg id="exit-fs-icon" class="w-5 h-5 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 9L4 4m0 0l5 0m-5 0l0 5m11 4l5 5m0 0l-5 0m5 0l0-5m-11 0l-5 5m0 0l5 0m-5 0l0-5m11-11l5-5m0 0l-5 0m5 0l0 5"/>
+                </svg>
+            </button>
+
+            <!-- Settings Button -->
+            <button id="open-settings-btn" aria-label="Settings" title="Settings" class="p-2.5 rounded-xl bg-slate-800/60 hover:bg-slate-700/80 border border-slate-700/50 text-slate-300 hover:text-white transition-all duration-200 active:scale-95">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                </svg>
+            </button>
+        </div>
     </header>
 
     <!-- Main Content Container -->
@@ -65,7 +79,7 @@
             </div>
 
             <!-- Central Circular Timer Display -->
-            <div class="relative w-64 h-64 sm:w-72 sm:h-72 flex items-center justify-center my-2">
+            <div class="relative w-64 h-64 sm:w-72 sm:h-72 flex items-center justify-center my-2 cursor-pointer" id="timer-circle-area" title="Double click to toggle fullscreen">
                 <svg class="w-full h-full -rotate-90 transform" viewBox="0 0 280 280">
                     <!-- Background Circle Ring -->
                     <circle cx="140" cy="140" r="120" stroke="currentColor" stroke-width="10" class="text-slate-800/70" fill="transparent"/>
@@ -79,22 +93,20 @@
                     <span id="status-badge" class="px-3.5 py-1 rounded-full text-xs font-bold tracking-widest uppercase bg-rose-500/10 text-rose-400 border border-rose-500/20 mb-2">FOCUS</span>
                     <!-- Time Output -->
                     <span id="time-display" class="text-5xl sm:text-6xl font-extrabold tracking-tight font-mono text-white my-1">25:00</span>
-                    <!-- Session Count -->
-                    <span id="session-counter" class="text-xs sm:text-sm font-medium text-slate-400 mt-1">Session #1</span>
                 </div>
             </div>
 
             <!-- Controls Toolbar -->
             <div class="flex items-center justify-center gap-4 mt-8 w-full">
                 <!-- Reset Button -->
-                <button id="reset-btn" title="Reset" class="p-3.5 rounded-2xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/60 transition-all duration-200 active:scale-95 shadow-md">
+                <button id="reset-btn" title="Reset (R)" class="p-3.5 rounded-2xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/60 transition-all duration-200 active:scale-95 shadow-md">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
                     </svg>
                 </button>
 
                 <!-- Primary Start/Pause Toggle Button -->
-                <button id="start-pause-btn" class="flex-1 py-3.5 px-6 rounded-2xl bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-400 hover:to-rose-500 text-white font-bold text-base shadow-lg shadow-rose-500/25 transition-all duration-200 active:scale-95 flex items-center justify-center gap-2">
+                <button id="start-pause-btn" title="Start/Pause (Space)" class="flex-1 py-3.5 px-6 rounded-2xl bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-400 hover:to-rose-500 text-white font-bold text-base shadow-lg shadow-rose-500/25 transition-all duration-200 active:scale-95 flex items-center justify-center gap-2">
                     <svg id="start-icon" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20">
                         <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM9.555 7.168A1 1 0 008 8v4a1 1 0 001.555.832l3-2a1 1 0 000-1.664l-3-2z" clip-rule="evenodd"/>
                     </svg>
@@ -105,7 +117,7 @@
                 </button>
 
                 <!-- Skip Button -->
-                <button id="skip-btn" title="Skip" class="p-3.5 rounded-2xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/60 transition-all duration-200 active:scale-95 shadow-md">
+                <button id="skip-btn" title="Skip (S)" class="p-3.5 rounded-2xl bg-slate-800/80 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700/60 transition-all duration-200 active:scale-95 shadow-md">
                     <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 5l7 7-7 7M5 5l7 7-7 7"/>
                     </svg>
@@ -116,7 +128,7 @@
 
     <!-- Footer Section -->
     <footer class="w-full max-w-md text-center py-4">
-        <p class="text-xs text-slate-500 font-medium">Automatically loops between focus and break sessions</p>
+        <p class="text-xs text-slate-500 font-medium">Shortcuts: Space (Start/Pause) | R (Reset) | S (Skip) | F (Fullscreen)</p>
     </footer>
 
     <!-- Settings Modal -->
@@ -158,7 +170,6 @@
         let currentMode = 'focus'; // 'focus' | 'break'
         let timeLeft = focusDuration * 60; // seconds
         let isRunning = false;
-        let sessionCount = 1;
         let timerInterval = null;
 
         // SVG Circle Configuration
@@ -171,7 +182,6 @@
         const progressCircle = document.getElementById('progress-circle');
         const statusBadge = document.getElementById('status-badge');
         const timeDisplay = document.getElementById('time-display');
-        const sessionCounter = document.getElementById('session-counter');
         const startPauseBtn = document.getElementById('start-pause-btn');
         const startPauseText = document.getElementById('start-pause-text');
         const startIcon = document.getElementById('start-icon');
@@ -179,6 +189,12 @@
         const resetBtn = document.getElementById('reset-btn');
         const skipBtn = document.getElementById('skip-btn');
         const timerCard = document.getElementById('timer-card');
+        const timerCircleArea = document.getElementById('timer-circle-area');
+
+        // Fullscreen elements
+        const fullscreenBtn = document.getElementById('fullscreen-btn');
+        const enterFsIcon = document.getElementById('enter-fs-icon');
+        const exitFsIcon = document.getElementById('exit-fs-icon');
 
         // Settings Modal references
         const openSettingsBtn = document.getElementById('open-settings-btn');
@@ -196,10 +212,8 @@
                 const AudioCtx = window.AudioContext || window.webkitAudioContext;
                 if (!AudioCtx) return;
                 const ctx = new AudioCtx();
-
                 const now = ctx.currentTime;
 
-                // Play soft double note chime (E5 -> A5 harmonized chord)
                 const osc1 = ctx.createOscillator();
                 const gain1 = ctx.createGain();
                 osc1.type = 'sine';
@@ -228,33 +242,37 @@
             }
         }
 
-        // Format seconds into MM:SS display format
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    console.log("Error attempting to enable fullscreen:", err);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
         function formatTime(seconds) {
             const mins = Math.floor(seconds / 60);
             const secs = seconds % 60;
             return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
         }
 
-        // Render time display, ring progress, session number, and document title
         function updateDisplay() {
             const formatted = formatTime(timeLeft);
             timeDisplay.textContent = formatted;
 
-            // Total time calculation for current mode
             const totalDurationSec = (currentMode === 'focus' ? focusDuration : breakDuration) * 60;
             const progressRatio = timeLeft / totalDurationSec;
             const strokeOffset = CIRCUMFERENCE * (1 - progressRatio);
             progressCircle.style.strokeDashoffset = strokeOffset;
 
-            // Update page title
             const capitalizedMode = currentMode === 'focus' ? 'Focus' : 'Break';
             document.title = `(${formatted}) ${capitalizedMode} | Pomodoro Timer`;
-
-            // Update session text
-            sessionCounter.textContent = `Session #${sessionCount}`;
         }
 
-        // Update mode styling and theme indicators
         function updateModeUI() {
             if (currentMode === 'focus') {
                 focusBtn.className = "py-2.5 px-4 rounded-xl text-xs sm:text-sm font-semibold transition-all duration-300 bg-rose-500 text-white shadow-lg shadow-rose-500/30";
@@ -263,7 +281,7 @@
                 statusBadge.textContent = "FOCUS";
                 statusBadge.className = "px-3.5 py-1 rounded-full text-xs font-bold tracking-widest uppercase bg-rose-500/10 text-rose-400 border border-rose-500/20 mb-2";
 
-                progressCircle.style.stroke = "#f43f5e"; // rose-500
+                progressCircle.style.stroke = "#f43f5e";
                 timerCard.className = "w-full glass-panel rounded-3xl p-6 sm:p-8 flex flex-col items-center transition-all duration-500 mode-focus-glow";
 
                 startPauseBtn.className = "flex-1 py-3.5 px-6 rounded-2xl bg-gradient-to-r from-rose-500 to-rose-600 hover:from-rose-400 hover:to-rose-500 text-white font-bold text-base shadow-lg shadow-rose-500/25 transition-all duration-200 active:scale-95 flex items-center justify-center gap-2";
@@ -274,14 +292,13 @@
                 statusBadge.textContent = "BREAK";
                 statusBadge.className = "px-3.5 py-1 rounded-full text-xs font-bold tracking-widest uppercase bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 mb-2";
 
-                progressCircle.style.stroke = "#10b981"; // emerald-500
+                progressCircle.style.stroke = "#10b981";
                 timerCard.className = "w-full glass-panel rounded-3xl p-6 sm:p-8 flex flex-col items-center transition-all duration-500 mode-break-glow";
 
                 startPauseBtn.className = "flex-1 py-3.5 px-6 rounded-2xl bg-gradient-to-r from-emerald-500 to-emerald-600 hover:from-emerald-400 hover:to-emerald-500 text-white font-bold text-base shadow-lg shadow-emerald-500/25 transition-all duration-200 active:scale-95 flex items-center justify-center gap-2";
             }
         }
 
-        // Start Timer Interval
         function startTimer() {
             if (isRunning) return;
             isRunning = true;
@@ -299,7 +316,6 @@
             }, 1000);
         }
 
-        // Pause Timer Interval
         function pauseTimer() {
             if (!isRunning) return;
             isRunning = false;
@@ -313,7 +329,6 @@
             }
         }
 
-        // Toggle Timer state
         function toggleStartPause() {
             if (isRunning) {
                 pauseTimer();
@@ -322,7 +337,6 @@
             }
         }
 
-        // Handle auto-switching between focus and break sessions
         function handleSessionComplete() {
             pauseTimer();
             playCompletionChime();
@@ -331,24 +345,21 @@
                 currentMode = 'break';
                 timeLeft = breakDuration * 60;
             } else {
-                sessionCount++;
                 currentMode = 'focus';
                 timeLeft = focusDuration * 60;
             }
 
             updateModeUI();
             updateDisplay();
-            startTimer(); // Auto-start next session
+            startTimer();
         }
 
-        // Manual Skip function
         function skipSession() {
             pauseTimer();
             if (currentMode === 'focus') {
                 currentMode = 'break';
                 timeLeft = breakDuration * 60;
             } else {
-                sessionCount++;
                 currentMode = 'focus';
                 timeLeft = focusDuration * 60;
             }
@@ -356,15 +367,12 @@
             updateDisplay();
         }
 
-        // Reset timer duration for active mode
         function resetTimer() {
             pauseTimer();
-            state.completedSessions = 0;
             timeLeft = (currentMode === 'focus' ? focusDuration : breakDuration) * 60;
             updateDisplay();
         }
 
-        // Switch modes explicitly via toggle buttons
         function switchMode(newMode) {
             if (currentMode === newMode) return;
             pauseTimer();
@@ -374,7 +382,6 @@
             updateDisplay();
         }
 
-        // Settings Modal Handlers
         function openSettings() {
             pauseTimer();
             focusInput.value = focusDuration;
@@ -390,7 +397,6 @@
             settingsModalCard.classList.add('scale-95');
         }
 
-        // Save new duration settings and update labels
         function handleSaveSettings(e) {
             e.preventDefault();
             const newFocus = parseInt(focusInput.value, 10);
@@ -400,18 +406,16 @@
                 focusDuration = newFocus;
                 breakDuration = newBreak;
 
-                // Update toggle button text labels
                 focusBtn.textContent = `Focus (${focusDuration}m)`;
                 breakBtn.textContent = `Break (${breakDuration}m)`;
 
-                // Update timer remaining time for current session
                 timeLeft = (currentMode === 'focus' ? focusDuration : breakDuration) * 60;
                 updateDisplay();
                 closeSettings();
             }
         }
 
-        // Event Listeners setup
+        // Action Event Listeners
         startPauseBtn.addEventListener('click', toggleStartPause);
         resetBtn.addEventListener('click', resetTimer);
         skipBtn.addEventListener('click', skipSession);
@@ -419,19 +423,48 @@
         focusBtn.addEventListener('click', () => switchMode('focus'));
         breakBtn.addEventListener('click', () => switchMode('break'));
 
+        fullscreenBtn.addEventListener('click', toggleFullscreen);
+        timerCircleArea.addEventListener('dblclick', toggleFullscreen);
+
+        document.addEventListener('fullscreenchange', () => {
+            if (document.fullscreenElement) {
+                enterFsIcon.classList.add('hidden');
+                exitFsIcon.classList.remove('hidden');
+            } else {
+                enterFsIcon.classList.remove('hidden');
+                exitFsIcon.classList.add('hidden');
+            }
+        });
+
+        // Keyboard Shortcuts Handler
+        document.addEventListener('keydown', (e) => {
+            // Disable keyboard shortcuts when typing in input fields
+            if (document.activeElement.tagName === 'INPUT') return;
+
+            if (e.code === 'Space') {
+                e.preventDefault();
+                toggleStartPause();
+            } else if (e.key === 'r' || e.key === 'R') {
+                resetTimer();
+            } else if (e.key === 's' || e.key === 'S') {
+                skipSession();
+            } else if (e.key === 'f' || e.key === 'F') {
+                toggleFullscreen();
+            }
+        });
+
         openSettingsBtn.addEventListener('click', openSettings);
         closeSettingsCross.addEventListener('click', closeSettings);
         cancelSettingsBtn.addEventListener('click', closeSettings);
         settingsForm.addEventListener('submit', handleSaveSettings);
 
-        // Close modal when clicking outside card
         settingsModal.addEventListener('click', (e) => {
             if (e.target === settingsModal) {
                 closeSettings();
             }
         });
 
-        // Initialize display on startup
+        // Initialize display
         updateDisplay();
     </script>
 </body>
