@@ -11,6 +11,7 @@
     <style>
         body {
             font-family: 'Plus Jakarta Sans', sans-serif;
+            transition: background-color 0.3s ease;
         }
         /* Custom smooth transition for circular SVG ring */
         .progress-ring__circle {
@@ -30,6 +31,19 @@
         }
         .mode-break-glow {
             box-shadow: 0 0 30px rgba(16, 185, 129, 0.2);
+        }
+
+        /* Gentle eye-friendly background pulse animation (3 times) */
+        @keyframes gentle-bg-pulse {
+            0%, 100% {
+                background-color: #020617; /* bg-slate-950 */
+            }
+            50% {
+                background-color: #1e293b; /* bg-slate-800 (ソフトで目眩のしない優しい光) */
+            }
+        }
+        .flash-bg {
+            animation: gentle-bg-pulse 0.6s ease-in-out 3;
         }
     </style>
 </head>
@@ -206,40 +220,56 @@
         const focusInput = document.getElementById('focus-input');
         const breakInput = document.getElementById('break-input');
 
-        // Web Audio API notification sound generator
+        // Web Audio API notification sound generator (Plays 3 times)
         function playCompletionChime() {
             try {
                 const AudioCtx = window.AudioContext || window.webkitAudioContext;
                 if (!AudioCtx) return;
                 const ctx = new AudioCtx();
-                const now = ctx.currentTime;
 
-                const osc1 = ctx.createOscillator();
-                const gain1 = ctx.createGain();
-                osc1.type = 'sine';
-                osc1.frequency.setValueAtTime(659.25, now); // E5
-                osc1.frequency.exponentialRampToValueAtTime(880.00, now + 0.15); // A5
-                gain1.gain.setValueAtTime(0.25, now);
-                gain1.gain.exponentialRampToValueAtTime(0.001, now + 1.2);
-                osc1.connect(gain1);
-                gain1.connect(ctx.destination);
-                osc1.start(now);
-                osc1.stop(now + 1.2);
+                // 0.6秒間隔で3回鳴らす
+                for (let i = 0; i < 3; i++) {
+                    const now = ctx.currentTime + (i * 0.6);
 
-                const osc2 = ctx.createOscillator();
-                const gain2 = ctx.createGain();
-                osc2.type = 'triangle';
-                osc2.frequency.setValueAtTime(523.25, now + 0.15); // C5
-                osc2.frequency.exponentialRampToValueAtTime(1046.50, now + 0.3); // C6
-                gain2.gain.setValueAtTime(0.2, now + 0.15);
-                gain2.gain.exponentialRampToValueAtTime(0.001, now + 1.5);
-                osc2.connect(gain2);
-                gain2.connect(ctx.destination);
-                osc2.start(now + 0.15);
-                osc2.stop(now + 1.5);
+                    const osc1 = ctx.createOscillator();
+                    const gain1 = ctx.createGain();
+                    osc1.type = 'sine';
+                    osc1.frequency.setValueAtTime(659.25, now); // E5
+                    osc1.frequency.exponentialRampToValueAtTime(880.00, now + 0.12); // A5
+                    gain1.gain.setValueAtTime(0.2, now);
+                    gain1.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+                    osc1.connect(gain1);
+                    gain1.connect(ctx.destination);
+                    osc1.start(now);
+                    osc1.stop(now + 0.5);
+
+                    const osc2 = ctx.createOscillator();
+                    const gain2 = ctx.createGain();
+                    osc2.type = 'triangle';
+                    osc2.frequency.setValueAtTime(523.25, now + 0.12); // C5
+                    osc2.frequency.exponentialRampToValueAtTime(1046.50, now + 0.25); // C6
+                    gain2.gain.setValueAtTime(0.15, now + 0.12);
+                    gain2.gain.exponentialRampToValueAtTime(0.001, now + 0.5);
+                    osc2.connect(gain2);
+                    gain2.connect(ctx.destination);
+                    osc2.start(now + 0.12);
+                    osc2.stop(now + 0.5);
+                }
             } catch (err) {
                 console.error("Web Audio error:", err);
             }
+        }
+
+        // Trigger gentle background flashing synchronized with the chime
+        function triggerGentleFlash() {
+            document.body.classList.remove('flash-bg');
+            // Trigger reflow for re-animation
+            void document.body.offsetWidth;
+            document.body.classList.add('flash-bg');
+
+            setTimeout(() => {
+                document.body.classList.remove('flash-bg');
+            }, 1800);
         }
 
         function toggleFullscreen() {
@@ -340,6 +370,7 @@
         function handleSessionComplete() {
             pauseTimer();
             playCompletionChime();
+            triggerGentleFlash();
 
             if (currentMode === 'focus') {
                 currentMode = 'break';
@@ -438,7 +469,6 @@
 
         // Keyboard Shortcuts Handler
         document.addEventListener('keydown', (e) => {
-            // Disable keyboard shortcuts when typing in input fields
             if (document.activeElement.tagName === 'INPUT') return;
 
             if (e.code === 'Space') {
